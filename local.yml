@@ -1,0 +1,30 @@
+  
+version: "3.9"
+volumes:
+  development_postgres_data: {}
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - development_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${APP_DATABASE_USER_NAME}
+      POSTGRES_PASSWORD: ${APP_DATABASE_PASSWORD}
+  web:
+    build:
+      context: .
+      dockerfile: ./compose/develop/Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/helpify_api
+    depends_on:
+      - db
+    environment:
+      APP_DATABASE_USER_NAME: ${APP_DATABASE_USER_NAME}
+      APP_DATABASE_PASSWORD: ${APP_DATABASE_PASSWORD}
+      APP_DATABASE_HOST: ${APP_DATABASE_HOST}
+      DEVISE_JWT_SECRET_KEY: ${DEVISE_JWT_SECRET_KEY}
