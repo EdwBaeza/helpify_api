@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   devise_for :users,
-              path: 'api/users',
+              path: 'api/v1/users',
               controllers: {
-                registrations: 'api/users/registrations',
-                sessions: 'api/users/sessions'
+                registrations: 'api/v1/users/registrations',
+                sessions: 'api/v1/users/sessions'
               }
 
   # namespace :api do

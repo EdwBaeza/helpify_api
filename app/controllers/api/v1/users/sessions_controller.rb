@@ -1,12 +1,11 @@
 
 # frozen_string_literal: true
 
-class Api::Users::SessionsController < Devise::SessionsController
+class Api::V1::Users::SessionsController < Devise::SessionsController
   include ActionController::MimeResponds
   respond_to :json
 
   def create
-    byebug
     super { |resource| @resource = resource }
   end
 

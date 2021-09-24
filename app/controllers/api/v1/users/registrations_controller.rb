@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::Users::RegistrationsController < Devise::RegistrationsController
+class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   include ActionController::MimeResponds
   before_action :update_create_params
   respond_to :json
