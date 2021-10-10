@@ -3,20 +3,9 @@ class ApplicationController < ActionController::API
 
   protected
 
-  def json_api(data, status, fields = {}, includes = "")
-    json_api_params = JsonApi::Params.new(fields, includes)
-    {
-      jsonapi: data,
-      fields: json_api_params.to_fields,
-      include: json_api_params.to_include,
-      status: status
-    }
-  end
-
-  def json_error(errors, status = 500)
-    {
-      json: { errors: errors },
-      status: status
-    }
+  def configure_permitted_parameters
+    added_attrs = [:email, :first_name, :last_name]
+    devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
+    devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
 end

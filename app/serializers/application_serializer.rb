@@ -1,2 +1,3 @@
-class ApplicationSerializer < JSONAPI::Serializable::Resource
+class ApplicationSerializer
+  include JSONAPI::Serializer
 end
