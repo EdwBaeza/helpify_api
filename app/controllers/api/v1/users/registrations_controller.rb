@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
+  before_action :configure_permitted_parameters
 
   # POST /resource
   def create
     build_resource(sign_up_params)
-    resource.save
+    resource.save!
     if resource.persisted?
       if resource.active_for_authentication?
         # set_flash_message! :notice, :signed_up
@@ -22,5 +23,11 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
       set_minimum_password_length
       respond_with resource
     end
+  end
+
+  def configure_permitted_parameters
+    added_attrs = %i[email name last_name second_last_name phone_number phone_country_code birth_date]
+    devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
+    devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
 end

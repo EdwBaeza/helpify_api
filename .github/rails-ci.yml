@@ -1,0 +1,26 @@
+name: Rails app CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: local.yml
+      APP_DATABASE_USER_NAME: postgres
+      APP_DATABASE_PASSWORD: ${{ secrets.HELPIFY_API_DB_PASSWORD }}
+      APP_DATABASE_HOST: db
+      RAILS_ENV: test
+      DEVISE_JWT_SECRET_KEY: ${{ secrets.HELPIFY_API_DEVISE_JWT_SECRET_KEY }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build docker stack
+      run: docker-compose build
+    - name: Create and migrate database
+      run: docker-compose run web bundle exec rails db:create db:migrate
+    - name: Run Tests
+      run: docker-compose run web bundle exec rspec

@@ -1,16 +1,7 @@
 class Api::V1::Users::MeController < ApplicationController
   before_action :doorkeeper_authorize!
-  # respond_to    :json
 
-  # GET /me.json
   def show
-    render json: current_resource_owner
-  end
-
-  private
-
-  # Find the user that owns the access token
-  def current_resource_owner
-    User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    render json: UserSerializer.new(current_resource_owner).serializable_hash
   end
 end

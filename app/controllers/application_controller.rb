@@ -3,9 +3,8 @@ class ApplicationController < ActionController::API
 
   protected
 
-  def configure_permitted_parameters
-    added_attrs = [:email, :first_name, :last_name]
-    devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
-    devise_parameter_sanitizer.permit :account_update, keys: added_attrs
+  # Find the user that owns the access token
+  def current_resource_owner
+    User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
 end

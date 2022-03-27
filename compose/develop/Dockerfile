@@ -1,22 +1,21 @@
-FROM ruby:2.7.3
+FROM ruby:2.7.3-alpine
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
-
+RUN apk --update & apk add --no-cache build-base libxml2-dev libxslt-dev build-base nodejs tzdata postgresql-dev postgresql-client imagemagick gcompat
 WORKDIR /helpify_api
 
 COPY Gemfile /helpify_api/Gemfile
-COPY Gemfile.lock /helpify_api/Gemfile.lock
+COPY Gemfile.* /helpify_api/Gemfile.lock
 
-RUN gem install bundler:1.17.3 && bundle install
+RUN gem install bundler:2.3.10 & bundle config set force_ruby_platform true & bundle install
 
 COPY . /helpify_api
 
 # Add a script to be executed every time the container starts.
-COPY /compose/develop/entrypoint.sh /usr/bin/
+COPY /compose/develop/entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /usr/bin/entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
 EXPOSE 3000
 
 # Start the main process.
