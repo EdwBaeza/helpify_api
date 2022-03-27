@@ -1,6 +1,6 @@
 FROM ruby:2.7.3-alpine
 
-RUN apk --update & apk add --no-cache build-base libxml2-dev libxslt-dev build-base nodejs tzdata postgresql-dev postgresql-client imagemagick gcompat
+RUN apk update & apk add --no-cache build-base libxml2-dev libxslt-dev build-base nodejs tzdata postgresql-dev postgresql-client imagemagick gcompat
 WORKDIR /helpify_api
 
 COPY Gemfile /helpify_api/Gemfile
